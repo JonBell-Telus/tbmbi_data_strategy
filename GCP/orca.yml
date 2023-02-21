@@ -1,0 +1,190 @@
+- action: append
+  datecolumn: last_updt_ts
+  dntl: BUS_BILLING_ACCOUNT_NUM
+  gcptable: BILLING_ACCOUNT_DIM
+  query: ' select  /*+ parallel */ * from  $1 t1 LEFT JOIN CPH_WS.CANADIAN_DATA_RESTRICTIONS t2 ON t1.BUS_BILLING_ACCOUNT_NUM = t2.cpid WHERE t2.cpid IS null  and  $2 > to_date(''$3'',''yyyy-mm-dd hh24:mi:ss'')'
+  server: HPBIPR 
+  splitby:  
+  tablename: DMADM.BILLING_ACCOUNT_DIM  
+
+- action: append
+  datecolumn: last_updt_ts
+  dntl: SRC_BILLING_ACCOUNT_NUM
+  gcptable: BILLING_ACCOUNT_WLN_INV_SUM
+  query: ' select  /*+ parallel */ * from  dmadm.BILLING_ACCOUNT_WLN_INV_SUM t1 LEFT JOIN CPH_WS.CANADIAN_DATA_RESTRICTIONS t2 ON t1.SRC_BILLING_ACCOUNT_NUM= t2.cpid WHERE t2.cpid IS null  and  $2 > to_date(''$3'',''yyyy-mm-dd hh24:mi:ss'')'
+  server: HPBIPR
+  splitby:  
+  tablename: dmadm.BILLING_ACCOUNT_WLN_INV_SUM 
+
+- action: truncate
+  datecolumn:  
+  dntl: CBU_CID
+  gcptable: CAMPAIGN_TRACKING
+  query: 'select /*+ parallel */ * from  $1 t1'
+  server: CAMPPR
+  splitby:  
+  tablename: TSETTINO.CAMPAIGN_TRACKING  
+
+- action: append
+  datecolumn: UPLOAD_DATE
+  dntl:
+  gcptable: CAMPAIGN_TRACKING_DIM
+  query: 'select /*+ parallel */  * from  TSETTINO.CAMPAIGN_TRACKING_DIM t1 where  $2 > to_date(''$3'',''yyyy-mm-dd hh24:mi:ss'') '
+  server: CAMPPR
+  splitby:
+  tablename: TSETTINO.CAMPAIGN_TRACKING_DIM  
+
+- action: append
+  datecolumn: snapshot_dt
+  dntl: CBU_CID
+  gcptable: CONTRACTS_MASTER
+  query: 'select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBU_CID COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL  and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: BTWP000777.contracts.dbo.CONTRACTS_MASTER 
+
+- action: append
+  datecolumn: load_dt
+  dntl: CBU_CID
+  gcptable: product_intensity
+  query: ' select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBU_CID COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL  and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: product_intensity.dbo.product_intensity 
+
+- action: append
+  datecolumn: last_updt_ts
+  dntl: BUS_CUST_ACCOUNT_NUM
+  gcptable: CORP_BACCT_CRSVC_AG_RCVBL_DTL
+  query: 'select  /*+ parallel */ t1.* from  DMADM.CORP_BACCT_CRSVC_AG_RCVBL_DTL t1 LEFT JOIN CPH_WS.CANADIAN_DATA_RESTRICTIONS t2 ON t1.BUS_CUST_ACCOUNT_NUM =  to_char(t2.cpid,''99999999'') WHERE t2.cpid IS null and $2 > to_date(''$3'',''yyyy-mm-dd hh24:mi:ss'')' 
+  server: HPBIPR
+  splitby: 
+  tablename: DMADM.CORP_BACCT_CRSVC_AG_RCVBL_DTL  
+
+- action: append
+  datecolumn: last_updt_ts
+  dntl: BUS_CUST_ACCOUNT_NUM
+  gcptable: CORP_CUST_LD_MTHLY_SUM
+  query: 'select t1.* from  dmadm.CORP_CUST_LD_MTHLY_SUM t1 LEFT JOIN CPH_WS.CANADIAN_DATA_RESTRICTIONS t2 ON t1.BUS_CUST_ACCOUNT_NUM = to_char(t2.cpid,''99999999'') WHERE t2.cpid IS null and $2 > to_date(''$3'',''yyyy-mm-dd hh24:mi:ss'')' 
+  server: HPBIPR
+  splitby: 
+  tablename: dmadm.CORP_CUST_LD_MTHLY_SUM  
+
+- action: append
+  datecolumn: last_updt_ts
+  dntl: BUS_BILLING_ACCOUNT_NUM
+  gcptable: DLY_SERVREQ_ACTVY_SUM
+  query: 'select t1.* from  DMADM.DLY_SERVREQ_ACTVY_SUM t1 LEFT JOIN CPH_WS.CANADIAN_DATA_RESTRICTIONS t2 ON t1.BUS_BILLING_ACCOUNT_NUM = to_char(t2.cpid,''99999999'') WHERE t2.cpid IS null and $2 > to_date(''$3'',''yyyy-mm-dd hh24:mi:ss'')' 
+  server: HPBIPR
+  splitby: 
+  tablename: DMADM.DLY_SERVREQ_ACTVY_SUM  
+
+- action: append
+  datecolumn: lastmodifieddate
+  dntl: 
+  gcptable: SFDC_EVENT
+  query: ' select t1.* from $1 t1 where $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: '[BTWP001612\SQL14PR01].sfdc.dbo.EVENT'  
+ 
+- action: append
+  datecolumn: lastmodifieddate
+  dntl: CBUCID__c
+  gcptable: sfdc_OPPORTUNITY
+  query: 'select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBUCID__c COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename:  '[BTWP001612\SQL14PR01].sfdc.dbo.OPPORTUNITY'
+
+
+- action: append
+  datecolumn: last_updt_ts
+  dntl: SRC_BILLING_ACCOUNT_NUM
+  gcptable: PROD_INSTNC_WLS_INV_SUM
+  query: ' select /*+ parallel */ t1.* from  $1 t1 LEFT JOIN CPH_WS.CANADIAN_DATA_RESTRICTIONS t2 ON to_char(t1.SRC_BILLING_ACCOUNT_NUM,''999999999'') = to_char(t2.cpid,''99999999'') WHERE t2.cpid IS null and $2 > to_date(''$3'',''yyyy-mm-dd hh24:mi:ss'')'
+  server: HPBIPR
+  splitby: 
+  tablename: DMADM.PROD_INSTNC_WLS_INV_SUM
+
+- action: append
+  datecolumn: date_added
+  dntl: CBUCID
+  gcptable: STATFLO_RETURN_FILE_LATEST
+  query: ' select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBUCID COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: BTWP000777.campaign.dbo.STATFLO_RETURN_FILE_LATEST  
+
+- action: append
+  datecolumn: LastModifiedDate
+  dntl: BAN__c
+  gcptable: SFDC_TASK
+  query: ' select t1.* from $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI_ban_subscriber AS dntl ON t1.BAN__c = dntl.ban where dntl.ban IS NULL and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: '[BTWP001612\SQL14PR01].sfdc.dbo.TASK'
+
+- action: append
+  datecolumn: LastModifiedDate
+  dntl: Account__c
+  gcptable: sfdc_VOC_SURVEY
+  query: ' select * from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI_ban_subscriber AS dntl ON t1.Account__c  COLLATE SQL_Latin1_General_CP1_CI_AS = dntl.ban where dntl.ban IS NULL and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename:  '[BTWP001612\SQL14PR01].sfdc.dbo.VOC_SURVEY'
+
+# action: append
+#  datecolumn: lastupdated
+#  dntl: CBU_CID
+#  gcptable: WIRELESSARSREMEDY
+#  query: ' select * from  RootCauseTableau.dbo.WIRELESSARSREMEDY t1 '
+#  server: panda
+#  splitby: tkt_created_datetime
+#  tablename: RootCauseTableau.dbo.WIRELESSARSREMEDY  
+
+- action: truncate
+  datecolumn: 
+  dntl: ban
+  gcptable: WLS_CAMPAIGN_BUILD
+  query: ' select /*+ parallel */ * from  $1 t1 '
+  server: CAMPPR 
+  splitby: 
+  tablename: TSETTINO.WLS_CAMPAIGN_BUILD  
+
+- action: truncate
+  datecolumn:  
+  dntl: cbu_cust_id
+  gcptable: REFERENCE_CBUCID_FTE 
+  query: ' select t1.* from  $1 t1 LEFT JOIN CPH_WS.CANADIAN_DATA_RESTRICTIONS t2 ON t1.cbu_cust_id =  to_char(t2.echid,''99999999'') WHERE t2.echid IS null ' 
+  server: HPBIPR
+  splitby: 
+  tablename: CPH_WS.REFERENCE_CBUCID_FTE  
+
+- action: truncate
+  datecolumn: last_updt_ts
+  dntl:
+  gcptable: product_report_hierarchy_dim
+  query: ' select  /*+ parallel */ t1.* from  $1 t1'
+  server: HPBIPR 
+  splitby: 
+  tablename: DMADM.product_report_hierarchy_dim 
+
+- action: truncate
+  datecolumn: last_updt_ts
+  dntl:
+  gcptable: cbu_segment_type_dim
+  query: ' select  /*+ parallel */ t1.* from  $1 t1'
+  server: HPBIPR 
+  splitby: 
+  tablename: DMADM.cbu_segment_type_dim 
+
+- action: truncate
+  datecolumn: last_updt_ts
+  dntl:
+  gcptable: alt_hierarchy_rules  
+  query: ' select  /*+ parallel */ t1.* from  $1 t1'
+  server: HPBIPR 
+  splitby: 
+  tablename: bi_adm.alt_hierarchy_rules 
+  

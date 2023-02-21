@@ -1,0 +1,8 @@
+- action:  append
+  datecolumn: loaded_date
+  dntl: CBU_CUST_ID
+  gcptable: port_out
+  query: 'select  t1.* from $1 t1  left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBU_CUST_ID  = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL and $2 > ''$3'''
+  server: cherry
+  splitby:  
+  tablename: portout.dbo.port_out

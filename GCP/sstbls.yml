@@ -1,0 +1,171 @@
+- action: append
+  datecolumn: data_as_of_dt
+  dntl: CBU_CID
+  gcptable: mvsf_base
+  query: 'select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBU_CID COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL  and $2 > ''$3'''
+  server: BTWP001611
+  splitby:
+  tablename: dolphin.dbo.MVSF_BASE
+
+- action: append
+  datecolumn: snapshot_ts
+  dntl: CBU_CUST_ID
+  gcptable: mthly_bus_wln_base
+  query: 'select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBU_CUST_ID COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL  and $2 > ''$3'''
+  server: BTWP001611
+  splitby:
+  tablename: RGU.dbo.MTHLY_BUS_WLN_BASE
+
+- action: append
+  datecolumn: snapshot_dt
+  dntl: CBU_CID
+  gcptable: CONTRACTS_MASTER
+  query: 'select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBU_CID COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL  and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: BTWP000777.contracts.dbo.CONTRACTS_MASTER 
+
+- action: append
+  datecolumn: load_dt
+  dntl: CBU_CID
+  gcptable: product_intensity
+  query: ' select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBU_CID COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL  and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: product_intensity.dbo.product_intensity 
+
+- action: append
+  datecolumn: lastmodifieddate
+  dntl: 
+  gcptable: SFDC_EVENT
+  query: ' select t1.* from $1 t1 where $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: '[BTWP001612\SQL14PR01].sfdc.dbo.EVENT'  
+ 
+- action: append
+  datecolumn: lastmodifieddate
+  dntl: CBUCID__c
+  gcptable: sfdc_OPPORTUNITY
+  query: 'select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBUCID__c COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: '[BTWP001612\SQL14PR01].sfdc.dbo.OPPORTUNITY'
+
+- action: append
+  datecolumn: date_added
+  dntl: CBUCID
+  gcptable: STATFLO_RETURN_FILE_LATEST
+  query: ' select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBUCID COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: BTWP000777.campaign.dbo.STATFLO_RETURN_FILE_LATEST  
+
+- action: append
+  datecolumn: LastModifiedDate
+  dntl: BAN__c
+  gcptable: SFDC_TASK
+  query: ' select t1.* from $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI_ban_subscriber AS dntl ON t1.BAN__c = dntl.ban where dntl.ban IS NULL and $2 > ''$3'''
+  server: BTWP001611
+  splitby: 
+  tablename: '[BTWP001612\SQL14PR01].sfdc.dbo.TASK'
+
+- action: append
+  datecolumn: lastmodifieddate
+  dntl: CBUCID__c
+  gcptable:  sfdc_account
+  query: 'select t1.* from $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBUCID__c COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL and $2 > ''$3'''
+  server: BTWP001612
+  splitby:
+  tablename: SFDC.dbo.ACCOUNT
+
+- action: append
+  datecolumn: lastmodifieddate
+  dntl: CBUCID__c
+  gcptable: intrx_sfdc_cases
+  query: 'select t1.* from $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBUCID__c COLLATE SQL_Latin1_General_CP1_CI_AS = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL and $2 > ''$3'''
+  server: BTWP001611  
+  splitby:  
+  tablename: '[BTWP001612\SQL14PR01].[SFDC].[dbo].[CASE]'
+ 
+- action: truncate
+  datecolumn:  
+  dntl:  
+  gcptable: dimension_soc_category
+  query: 'select t1.* from $1 t1'
+  server: BTWP001611
+  splitby:  
+  tablename: BTWP000777.Reference.dbo.DIMENSION_SOC_CATEGORY 
+
+- action: truncate
+  datecolumn:
+  dntl: wtn
+  gcptable: dim_wtn_btn_can_cbss
+  query: 'select t1.* from $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI_ban_subscriber AS dntl ON t1.wtn COLLATE SQL_Latin1_General_CP1_CI_AS = dntl.subscriber_no where dntl.subscriber_no IS NULL  '
+  server: BTWP001611
+  splitby:  
+  tablename: BTWP000777.Marketing.dbo.DIM_WTN_BTN_CAN_CBSS_LD
+ 
+- action: truncate
+  datecolumn:  
+  dntl: cbu_cid
+  gcptable: mvsf_contracts
+  query: 'select t1.* from $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBU_Cid  COLLATE SQL_Latin1_General_CP1_CI_AS  = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL'
+  server: BTWP001611
+  splitby:
+  tablename: BTWP000777.MVSF.dbo.MVSF_CONTRACTS
+
+- action: truncate
+  datecolumn: loaded_date
+  dntl: CBU_CUST_ID
+  gcptable: port_out
+  query: 'select  t1.* from $1 t1  left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI AS dntl ON t1.CBU_CUST_ID  = RIGHT(''0000000000'' + dntl.echid, 10) where dntl.echid IS NULL and $2 > ''$3'''
+  server: cherry
+  splitby:  
+  tablename: portout.dbo.port_out
+
+- action: append
+  datecolumn: ccyymm
+  dntl: ban
+  gcptable: pvt_porting_allstatus_v3
+  query: 'select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI_ban_subscriber AS dntl ON t1.ban COLLATE SQL_Latin1_General_CP1_CI_AS = dntl.ban where dntl.ban IS NULL and $2 > ''$3'''
+  server: btwp001611
+  splitby: 
+  tablename: '[WP40991\SQL08PR02].VISION.dbo.PVT_PORTING_ALLSTATUS_STG_V3'
+
+- action: append
+  datecolumn: TRANSACTION_DATE
+  dntl: ban
+  gcptable: wome_repository
+  query: 'select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI_ban_subscriber AS dntl ON t1.ban COLLATE SQL_Latin1_General_CP1_CI_AS = dntl.ban where dntl.ban IS NULL and $2 > ''$3'''
+  server: btwp001611
+  splitby:  
+  tablename: '[WP40991\SQL08PR02].VISION.dbo.WOME_REPOSITORY_V3'
+
+- action: append
+  datecolumn: ACTIVITY_DATE
+  dntl: ban
+  gcptable: pvt_actsdeacts_stg_dere_v4
+  query: 'select t1.* from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI_ban_subscriber AS dntl ON t1.ban COLLATE SQL_Latin1_General_CP1_CI_AS = dntl.ban where dntl.ban IS NULL and $2 > ''$3'''
+  server: btwp001611
+  splitby:  
+  tablename: '[WP40991\SQL08PR02].VISION.dbo.PVT_ACTSDEACTS_STG_DERE_V4'
+
+- action: append
+  datecolumn: LastModifiedDate
+  dntl: Account__c
+  gcptable: sfdc_VOC_SURVEY
+  query: ' select * from  $1 t1 left join [BTWP001612\SQL14PR01].dntl.dbo.DNTL_HPBI_ban_subscriber AS dntl ON t1.Account__c  COLLATE SQL_Latin1_General_CP1_CI_AS = dntl.ban where dntl.ban IS NULL and $2 > ''$3'''
+  server: BTWP001611
+  splitby:
+  tablename:  '[BTWP001612\SQL14PR01].sfdc.dbo.VOC_SURVEY'
+
+# action: append
+#  datecolumn: lastupdated
+#  dntl: CBU_CID
+#  gcptable: WIRELESSARSREMEDY
+#  query: ' select * from  RootCauseTableau.dbo.WIRELESSARSREMEDY t1 '
+#  server: panda
+#  splitby: tkt_created_datetime
+#  tablename: RootCauseTableau.dbo.WIRELESSARSREMEDY  
+

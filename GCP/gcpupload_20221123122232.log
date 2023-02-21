@@ -1,0 +1,5 @@
+2022-11-23 20:22:39.782225 - dmadm.alt_corp_customer_profl Starting
+2022-11-23 20:22:41.794435 - dmadm.alt_corp_customer_profl GCP table:alt_corp_customer_profl  last_updt_ts Max date = 2022-11-06 03:30:01
+2022-11-23 20:22:55.304009 - dmadm.alt_corp_customer_profl Rows to load = 11428500
+2022-11-23 20:22:57.697462 - dmadm.alt_corp_customer_profl Getting data from source
+2022-11-23 20:22:58.944136 - dmadm.alt_corp_customer_profl Writing parquet data to output directory.

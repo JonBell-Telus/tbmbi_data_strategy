@@ -1,0 +1,3 @@
+2022-11-23 19:50:51.816770 - dmadm.billing_account_dim Starting
+2022-11-23 19:50:53.578064 - dmadm.billing_account_dim GCP table:billing_account_dim  last_updt_ts Max date = 2022-11-06 03:09:03
+2022-11-23 19:51:00.438316 - dmadm.billing_account_dim Rows to load = 3140759

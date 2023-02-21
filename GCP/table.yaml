@@ -1,0 +1,32 @@
+kind: table
+version: v1
+metadata:
+  dep: "1879"
+description: "c360_wtn_can_mapping_dedup "
+resource_name: bq_c360_wtn_can_mapping_dedup
+dataset_id: orca
+expiration_datetime_staging: datetime(2032,12,25)
+expiration_datetime_serving:
+schema: >
+  
+iam_binding:
+    users:
+      subscribers:
+        - principal: user:vipul.gupta@telus.com
+          expiry: datetime(2037,10,25)
+      publishers:
+        - principal: user:jonathan.bell@telus.com
+          expiry: datetime(2037,12,25)
+        - principal: user:ryan.powers@telus.com
+          expiry: datetime(2037,12,25)
+        - principal: user:gurkiran.behl@telus.com
+          expiry: datetime(2037,12,25)
+        - principal: user:mahmudul.hasan@telus.com
+          expiry: datetime(2037,12,25)
+    groups:
+      subscribers:
+      publishers:
+    service_accounts:
+      subscribers:
+      publishers:
+        - principal: serviceAccount:bilayer-sa@bi-srv-tbs-datasci-pr-7529e3.iam.gserviceaccount.com
